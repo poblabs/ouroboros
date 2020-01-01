@@ -73,7 +73,9 @@ class BaseImageObject(object):
             if self.config.dry_run:
                 # The authentication doesn't work with this call
                 # See bugs https://github.com/docker/docker-py/issues/2225
-                return self.client.images.get_registry_data(tag)
+                #return self.client.images.get_registry_data(tag)
+                # POB Edit
+                return self.client.images.pull(tag)
             else:
                 if self.config.auth_json:
                     return_image = self.client.images.pull(tag, auth_config=self.config.auth_json)
