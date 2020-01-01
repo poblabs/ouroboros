@@ -143,6 +143,7 @@ def main():
         log_level = args.LOG_LEVEL
     ol = OuroborosLogger(level=log_level)
     ol.logger.info('Version: %s-%s', VERSION, BRANCH)
+    ol.logger.info('POB NOTIFY ONLY FORK USING DRY_RUN AS DEFAULT')
     config = Config(environment_vars=environ, cli_args=args)
     config_dict = {key: value for key, value in vars(config).items() if key.upper() in config.options}
     ol.logger.debug("Ouroboros configuration: %s", config_dict)
@@ -196,7 +197,7 @@ def main():
         next_run = scheduler.get_jobs()[0].next_run_time
     else:
         now = datetime.now(timezone.utc).astimezone()
-        next_run = (now + timedelta(0, config.interval)).strftime("%Y-%m-%d %H:%M:%S")
+        next_run = (now + timedelta(0, config.interval)).strftime("%m-%d-%Y %H:%M:%S")
 
     if not config.skip_startup_notifications:
         notification_manager.send(kind='startup', next_run=next_run)

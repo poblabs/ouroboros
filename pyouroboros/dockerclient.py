@@ -296,6 +296,7 @@ class Container(BaseImageObject):
         return updateable, depends_on_containers, hard_depends_on_containers
 
     def update(self):
+        self.logger.info('checking for updates')
         updated_count = 0
         try:
             updateable, depends_on_containers, hard_depends_on_containers = self.socket_check()
@@ -310,7 +311,8 @@ class Container(BaseImageObject):
                 # Ugly hack for repo digest
                 repo_digest_id = current_image.attrs['RepoDigests'][0].split('@')[1]
                 if repo_digest_id != latest_image.id:
-                    self.logger.info('dry run : %s would be updated', container.name)
+                    self.logger.info('dry run / notify : %s can be updated', container.name)
+                    self.notification_manager.send(container_tuples=updateable, socket=self.socket, kind='notify', container=container.name)
                 continue
 
             if container.name in ['ouroboros', 'ouroboros-updated']:

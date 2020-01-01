@@ -32,14 +32,21 @@ class NotificationManager(object):
 
         return apprise_obj
 
-    def send(self, container_tuples=None, socket=None, kind='update', next_run=None, mode='container'):
+    def send(self, container_tuples=None, socket=None, kind='update', next_run=None, mode='container', container=None):
         if kind == 'startup':
             now = datetime.now(timezone.utc).astimezone()
             title = f'Ouroboros has started'
             body_fields = [
                 f'Host: {self.config.hostname}',
-                f'Time: {now.strftime("%Y-%m-%d %H:%M:%S")}',
+                f'Time: {now.strftime("%m-%d-%Y %H:%M:%S")}',
                 f'Next Run: {next_run}']
+        elif kind == 'notify':
+            now = datetime.now(timezone.utc).astimezone()
+            title = f'Containers can be updated!'
+            body_fields = [
+                f'Host: {self.config.hostname}',
+                f'Time: {now.strftime("%m-%d-%Y %H:%M:%S")}',
+                f'Container: {container}']
         else:
             title = 'Ouroboros has updated containers!'
             body_fields = [

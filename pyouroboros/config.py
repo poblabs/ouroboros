@@ -23,7 +23,7 @@ class Config(object):
     log_level = 'info'
     cleanup = False
     run_once = False
-    dry_run = False
+    dry_run = True
     self_update = False
     label_enable = False
     labels_only = False
@@ -139,9 +139,9 @@ class Config(object):
         if self.data_export == 'prometheus' and self.self_update:
             self.logger.warning("If you bind a port to ouroboros, it will be lost when it updates itself.")
 
-        if self.dry_run and not self.run_once:
-            self.logger.warning("Dry run is designed to be ran with run once. Setting for you.")
-            self.run_once = True
+        #if self.dry_run and not self.run_once:
+            #self.logger.warning("Dry run is designed to be ran with run once. Setting for you.")
+            #self.run_once = True
 
         # Remove default config that is not used for cleaner logs
         if self.data_export != 'prometheus':
